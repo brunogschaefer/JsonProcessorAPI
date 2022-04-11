@@ -1,6 +1,8 @@
 package com.mesbro.standardbroker.config;
 
+import org.apache.camel.CamelContext;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.model.rest.RestBindingMode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -12,6 +14,8 @@ public class CamelConfig extends RouteBuilder{
 
     @Value("${main.api.path}")
     private String contextPath;
+    
+	CamelContext ctx = new DefaultCamelContext();
 
     @Override
     public void configure() throws Exception {
@@ -25,7 +29,7 @@ public class CamelConfig extends RouteBuilder{
         .apiContextRouteId("doc-api")
         .component("servlet")
         .bindingMode(RestBindingMode.json);
-        
+    
     }
 
 
