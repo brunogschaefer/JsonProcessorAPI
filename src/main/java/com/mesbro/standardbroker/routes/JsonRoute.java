@@ -1,5 +1,7 @@
 package com.mesbro.standardbroker.routes;
 
+import com.mesbro.standardbroker.processors.JsonProcessor;
+
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
 import org.springframework.stereotype.Component;
@@ -19,9 +21,12 @@ public class JsonRoute extends RouteBuilder{
         from("direct:postJsontoJson").routeId("getJsonFromExternal")
         .removeHeader("CamelHttpUri")
         .to(externalHostUri)
-        .unmarshal().json()
-        .to("jolt:processBody")
-        .log("teste + ${body}");
+        .convertBodyTo(String.class)
+        // .unmarshal().json()
+        .to("direct:processBody");
+
+        from("direct:processBody")
+        .process(new JsonProcessor());
     }
 }
 
