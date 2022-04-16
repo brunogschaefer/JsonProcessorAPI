@@ -1,16 +1,16 @@
 package org.bgschaefer.routes;
 
 import javax.enterprise.context.ApplicationScoped;
-
-import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.builder.endpoint.EndpointRouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
 import org.bgschaefer.processors.JsonProcessor;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
 public class MainRoute extends EndpointRouteBuilder{
 
-    private final String externalHostUri = "https://api.openweathermap.org/data/2.5/weather?q=Blumenau,br&APPID=d24a73177b072e4cbc2e316e20acb866"; 
+    @ConfigProperty(name = "jsonprocessor.consumes.host")
+    private String externalHostUri; 
 
     @Override
     public void configure() throws Exception {
@@ -19,16 +19,15 @@ public class MainRoute extends EndpointRouteBuilder{
         .bindingMode(RestBindingMode.auto)
         .to("direct:forwardRequest");
 
-        from("direct:forwardRequest").routeId("forwardRequest")
+        from("direct:forwardRequest")
+        .routeId("forwardRequest") // tratar exceção
         .removeHeader("CamelHttpUri")
         .to(externalHostUri)
         .convertBodyTo(String.class)
-        // .unmarshal().json()
         .to("direct:processBody");
 
         from("direct:processBody")
-        .process(new JsonProcessor());
-        
+        .process(new JsonProcessor()).endRest();
     }
     
 }

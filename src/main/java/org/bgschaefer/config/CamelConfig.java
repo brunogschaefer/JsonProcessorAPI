@@ -24,10 +24,6 @@ public class CamelConfig extends RouteBuilder{
         .contextPath(contextPath)
         .port(serverPort)
         .enableCORS(true)
-        // .apiContextPath("/api-doc")
-        // .apiProperty("api.title", "Standard Camel RESTAPI")
-        // .apiProperty("api.version", "v1")
-        // .apiContextRouteId("")
         .component("servlet")
         .bindingMode(RestBindingMode.json);
         
