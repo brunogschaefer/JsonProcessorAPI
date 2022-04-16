@@ -20,7 +20,7 @@ public class JsonProcessor implements Processor {
     @Override
     public void process(Exchange exchange) throws Exception {
         String body = exchange.getMessage().getBody().toString();
-        List<Object> spec = JsonUtils.jsonToList(this.getClass().getClassLoader().getResourceAsStream("spec.json")); // tratar exceção
+        List<Object> spec = JsonUtils.jsonToList(this.getClass().getClassLoader().getResourceAsStream(specFile)); // tratar exceção
         Chainr chainr = Chainr.fromSpec(spec);
         Object input = JsonUtils.jsonToObject(body);
         Object output = chainr.transform(input);

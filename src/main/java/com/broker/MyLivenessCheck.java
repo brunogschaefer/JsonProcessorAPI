@@ -1,4 +1,4 @@
-package org.bgschaefer;
+package com.broker;
 
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;

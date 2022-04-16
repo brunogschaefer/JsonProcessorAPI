@@ -1,6 +1,10 @@
 package com.broker.routes;
 
+import java.net.UnknownHostException;
+
 import javax.enterprise.context.ApplicationScoped;
+
+import org.apache.camel.FailedToCreateRouteException;
 import org.apache.camel.builder.endpoint.EndpointRouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
 import com.broker.processors.JsonProcessor;
@@ -20,16 +24,25 @@ public class MainRoute extends EndpointRouteBuilder{
         rest().consumes("application/json")
         .get(getPath)
         .bindingMode(RestBindingMode.auto)
-        .to("direct:forwardRequest");
+        .route().routeId("connector")
+        .toD("direct:forwardRequest");
 
         from("direct:forwardRequest")
-        .routeId("forwardRequest") // tratar exceção
+        .routeId("forward-request") 
         .removeHeader("CamelHttpUri")
-        .to(externalHostUri)
-        .convertBodyTo(String.class)
-        .to("direct:processBody");
+        .doTry()
+            .toD("platform-http:" + externalHostUri)
+            .convertBodyTo(String.class)
+            .to("direct:processBody")
+        .doCatch(UnknownHostException.class)
+            .log("Falha ao criar a rota com o servidor. Favor, checar se a URL fornecida está correta")
+        .endDoTry();
 
         from("direct:processBody")
+        .routeId("processor")
         .process(new JsonProcessor()).endRest();
     }
 }
+
+//ResolveEndpointFailedException
+//FailedToCreateRouteException

@@ -26,6 +26,7 @@ public class CamelConfig extends RouteBuilder{
         .port(serverPort)
         .enableCORS(true)
         .component("servlet")
-        .bindingMode(RestBindingMode.json);
+        .bindingMode(RestBindingMode.json)
+        .component("platform-http");
     }
 }
