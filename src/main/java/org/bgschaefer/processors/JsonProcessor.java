@@ -14,9 +14,13 @@ import com.bazaarvoice.jolt.JsonUtils;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
 public class JsonProcessor implements Processor {
+
+    @ConfigProperty(name = "api.resources.spec")
+    private String specFile;
 
     @Override
     public void process(Exchange exchange) throws Exception {

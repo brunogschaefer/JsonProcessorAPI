@@ -9,13 +9,16 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 @ApplicationScoped
 public class MainRoute extends EndpointRouteBuilder{
 
-    @ConfigProperty(name = "jsonprocessor.consumes.host")
+    @ConfigProperty(name = "api.consumes.external")
     private String externalHostUri; 
+
+    @ConfigProperty(name = "api.rest.get")
+    private String getPath;
 
     @Override
     public void configure() throws Exception {
         rest().consumes("application/json")
-        .get("/jsontojson")
+        .get(getPath)
         .bindingMode(RestBindingMode.auto)
         .to("direct:forwardRequest");
 
@@ -29,5 +32,4 @@ public class MainRoute extends EndpointRouteBuilder{
         from("direct:processBody")
         .process(new JsonProcessor()).endRest();
     }
-    
 }

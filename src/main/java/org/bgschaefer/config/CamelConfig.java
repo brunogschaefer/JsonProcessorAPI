@@ -6,27 +6,26 @@ import org.apache.camel.CamelContext;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.model.rest.RestBindingMode;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
 public class CamelConfig extends RouteBuilder{
 
-    // @Value("${server.port}")
-    private final String serverPort = "8080";
+    @ConfigProperty(name = "api.port")
+    private String serverPort;
 
-    // @Value("${main.api.path}")
-    private final String contextPath = "localhost";
+    @ConfigProperty(name = "api.host")
+    private String serverHost;
     
 	CamelContext ctx = new DefaultCamelContext();
 
     @Override
     public void configure() throws Exception {
         restConfiguration()
-        .contextPath(contextPath)
+        .contextPath(serverHost)
         .port(serverPort)
         .enableCORS(true)
         .component("servlet")
         .bindingMode(RestBindingMode.json);
-        
     }
-    
 }
