@@ -1,4 +1,4 @@
-package org.bgschaefer.controllers;
+package com.broker.controllers;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.GET;

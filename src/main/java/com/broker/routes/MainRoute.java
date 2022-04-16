@@ -1,9 +1,9 @@
-package org.bgschaefer.routes;
+package com.broker.routes;
 
 import javax.enterprise.context.ApplicationScoped;
 import org.apache.camel.builder.endpoint.EndpointRouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
-import org.bgschaefer.processors.JsonProcessor;
+import com.broker.processors.JsonProcessor;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped

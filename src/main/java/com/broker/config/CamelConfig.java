@@ -1,4 +1,4 @@
-package org.bgschaefer.config;
+package com.broker.config;
 
 import javax.enterprise.context.ApplicationScoped;
 
